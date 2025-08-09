@@ -31,13 +31,13 @@ charts:
 	python scripts/generate_charts.py
 
 html: | $(OUTDIR)
-	pandoc $(PANDOC_OPTS) $(CHAPTERS) -o $(OUTDIR)/book.html
+	bash scripts/pandoc.sh $(PANDOC_OPTS) $(CHAPTERS) -o $(OUTDIR)/book.html
 
 epub: | $(OUTDIR)
-	pandoc $(PANDOC_OPTS) $(CHAPTERS) -o $(OUTDIR)/book.epub
+	bash scripts/pandoc.sh $(PANDOC_OPTS) $(CHAPTERS) -o $(OUTDIR)/book.epub
 
-pdf: | $(OUTDIR)
-	pandoc $(PANDOC_OPTS) $(CHAPTERS) -o $(OUTDIR)/book.pdf
+pdf: html
+	. .venv/bin/activate 2>/dev/null || true; python scripts/html_to_pdf.py $(OUTDIR)/book.html $(OUTDIR)/book.pdf
 
 $(OUTDIR):
 	mkdir -p $(OUTDIR)
